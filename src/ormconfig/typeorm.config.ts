@@ -4,6 +4,7 @@ import { Admin } from 'src/entities/admin.entity';
 import { Assistant } from 'src/entities/assistant.entity';
 import { Groups } from 'src/entities/groups.entity';
 import { Students } from 'src/entities/students.entity ';
+import { Tasks } from 'src/entities/task.entity';
 dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
@@ -13,7 +14,7 @@ export const connectDb: TypeOrmModuleOptions = {
   password: 'QqjMYGge3fpt9NZgfBJNyKrUlPT1fv7d',
   username: 'jqadiugi',
   database: 'jqadiugi',
-  entities: [Assistant, Groups, Students, Admin],
+  entities: [Assistant, Groups, Students, Admin, Tasks],
   autoLoadEntities: true,
   synchronize: true,
 };

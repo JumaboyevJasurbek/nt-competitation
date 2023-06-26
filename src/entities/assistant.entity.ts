@@ -3,13 +3,12 @@ import {
   Column,
   Entity,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Groups } from './groups.entity';
 import { Gender } from 'src/types';
 
-@Entity({ name: 'assistant' })
+@Entity({ name: 'assistants' })
 export class Assistant extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,6 +18,9 @@ export class Assistant extends BaseEntity {
 
   @Column()
   last_name: string;
+
+  @Column()
+  password: string;
 
   @Column()
   age: number;

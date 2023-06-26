@@ -36,7 +36,11 @@ export class AppModule implements NestModule {
       .apply(TokenAdminMiddleWare)
       .exclude(
         { path: '/students', method: RequestMethod.GET },
+        { path: '/admin', method: RequestMethod.POST },
         { path: '/groups', method: RequestMethod.GET },
+        { path: '/assistants/login', method: RequestMethod.POST },
+        { path: '/assistants/:id', method: RequestMethod.POST },
+        { path: '/assistants/login', method: RequestMethod.POST },
       )
 
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
@@ -51,6 +55,7 @@ export class AppModule implements NestModule {
         { path: '/admin', method: RequestMethod.POST },
         { path: '/admin/assistant', method: RequestMethod.POST },
         { path: '/admin/group', method: RequestMethod.POST },
+        { path: '/assistants/login', method: RequestMethod.POST },
       )
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
   }

@@ -3,8 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Assistant } from './assistant.entity';
@@ -24,8 +24,9 @@ export class Groups extends BaseEntity {
   @Column()
   teacher: string;
 
-  @OneToOne(() => Assistant, (assistant) => assistant.groups, { cascade: true })
-  @JoinColumn()
+  @ManyToOne(() => Assistant, (assistant) => assistant.groups, {
+    cascade: true,
+  })
   assistant: Assistant;
 
   @Column('simple-array')
@@ -45,4 +46,5 @@ export class Groups extends BaseEntity {
 
   @OneToMany(() => Students, (student) => student.group)
   student: Students[];
+
 }

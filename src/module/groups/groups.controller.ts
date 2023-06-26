@@ -10,7 +10,7 @@ import {
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 
 @Controller('groups')
 @ApiTags('Groups')
@@ -18,11 +18,21 @@ export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
   @Post()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
   create(@Body() createGroupDto: CreateGroupDto) {
     return this.groupsService.create(createGroupDto);
   }
 
   @Get()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
   findAll() {
     return this.groupsService.findAll();
   }

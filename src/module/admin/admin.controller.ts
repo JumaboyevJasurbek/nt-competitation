@@ -55,21 +55,6 @@ export class AdminController {
     return this.adminService.createStudent(createStudent);
   }
 
-  @Get()
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Admin token',
-    required: true,
-  })
-  findAll() {
-    return this.adminService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.update(+id, updateAdminDto);

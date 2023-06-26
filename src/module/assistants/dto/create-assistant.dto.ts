@@ -36,6 +36,16 @@ export class CreateAssistantDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
+    name: 'password',
+    type: 'string',
+    default: 'aasasas1212',
+    required: true,
+  })
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
     name: 'position',
     type: 'string',
     default: 'Fullstack',

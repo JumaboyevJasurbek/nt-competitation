@@ -13,7 +13,7 @@ import { Students } from 'src/entities/students.entity ';
 
 @Injectable()
 export class AdminService {
-  async create(add: CreateAdminDto) {
+  async create(add: CreateAdminDto): Promise<Object> {
     const findAdmin: Admin | any = await Admin.findOne({
       where: {
         username: add.username,
@@ -43,7 +43,9 @@ export class AdminService {
     };
   }
 
-  async createAssistants(createAssistantsDto: CreateAssistantDto) {
+  async createAssistants(
+    createAssistantsDto: CreateAssistantDto,
+  ): Promise<object> {
     const findAssistant: Assistant | any = await Assistant.findOne({
       where: {
         username: createAssistantsDto.username,
@@ -59,16 +61,21 @@ export class AdminService {
     const bcrypt1 = await bcrypt.genSalt();
     const number = await bcrypt.hash(createAssistantsDto.tel_number, bcrypt1);
 
-    const newUser = await Assistant.create({
+    const newUser: Assistant = await Assistant.create({
       first_name: createAssistantsDto.first_name,
       last_name: createAssistantsDto.last_name,
       age: createAssistantsDto.age,
+      password: createAssistantsDto.password,
       gender: createAssistantsDto.gender,
       position: createAssistantsDto.position,
       img: createAssistantsDto.img,
       username: createAssistantsDto.username,
       tel_number: createAssistantsDto.tel_number,
-    }).save();
+    })
+      .save()
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
 
     const token = jwt.sign({
       id: newUser?.id,
@@ -82,7 +89,7 @@ export class AdminService {
     };
   }
 
-  async createGroup(createGroup: CreateGroupDto) {
+  async createGroup(createGroup: CreateGroupDto): Promise<Object> {
     const findGroup: Groups | any = await Groups.findOne({
       where: { group_number: createGroup.group_number },
     });
@@ -92,7 +99,7 @@ export class AdminService {
     }
 
     const groups = await Groups.create({
-      assistant: createGroup?.assistant,
+      assistant: createGroup.assistant,
       group_number: createGroup.group_number,
       img: createGroup.img,
       lesson_time: createGroup.lesson_time,
@@ -101,7 +108,11 @@ export class AdminService {
       room_number: createGroup.room_number,
       teacher: createGroup.teacher,
       open_date: new Date(),
-    }).save();
+    })
+      .save()
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
 
     return {
       status: HttpStatus.OK,
@@ -113,13 +124,11 @@ export class AdminService {
       where: { username: createStudent.username },
     });
 
-
-
     if (findStudent) {
       throw new HttpException(`Student already exists`, HttpStatus.BAD_REQUEST);
     }
 
-    const newStudent = await Students.create({
+    await Students.create({
       age: createStudent.age,
       first_name: createStudent.first_name,
       gender: createStudent.gender,
@@ -128,26 +137,19 @@ export class AdminService {
       last_name: createStudent.last_name,
       tel_number: createStudent.tel_number,
       username: createStudent.username,
-    }).save()
-    .catch((e)=> {
-      throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
     })
+      .save()
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
 
     return {
       status: HttpStatus.OK,
     };
   }
 
-  findAll() {
-    return `This action returns all admin`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
-  }
-
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
+  async update(id: number, updateAdminDto: UpdateAdminDto) {
+    return;
   }
 
   remove(id: number) {

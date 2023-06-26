@@ -3,9 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -17,33 +14,33 @@ import { ApiHeader, ApiTags } from '@nestjs/swagger';
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
-  @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentsService.create(createStudentDto);
-  }
+  // @Post()
+  // create(@Body() createStudentDto: CreateStudentDto) {
+  //   return this.studentsService.create(createStudentDto);
+  // }
 
   @Get()
   @ApiHeader({
     name: 'autharization',
-    description: 'Assistant token',
+    description: 'Admin token',
     required: true,
   })
   findAll() {
     return this.studentsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentsService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.studentsService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentsService.update(+id, updateStudentDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+  //   return this.studentsService.update(+id, updateStudentDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.studentsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.studentsService.remove(+id);
+  // }
 }

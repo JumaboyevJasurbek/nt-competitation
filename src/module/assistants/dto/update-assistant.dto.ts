@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateAssistantDto } from './create-assistant.dto';
-import { IsString, IsEnum } from 'class-validator';
+import { IsString, IsEnum, IsNumber } from 'class-validator';
 import { Gender } from 'src/types';
 
 export class UpdateAssistantDto extends PartialType(CreateAssistantDto) {
@@ -22,14 +22,27 @@ export class UpdateAssistantDto extends PartialType(CreateAssistantDto) {
   })
   last_name: string;
 
-  @IsString()
+  @IsNumber()
   @ApiProperty({
     name: 'age',
     type: 'number',
-    default: 'Karimov',
+    default: 23,
     required: true,
   })
   age: number;
+
+
+    
+  @IsString()
+  @ApiProperty({
+    name: 'password',
+    type: 'string',
+    default: 'aasasas1212',
+    required: true,
+  })
+  password: string;
+
+
 
   @IsString()
   @ApiProperty({

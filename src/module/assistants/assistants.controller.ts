@@ -1,36 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AssistantsService } from './assistants.service';
-import { CreateAssistantDto } from './dto/create-assistant.dto';
 import { UpdateAssistantDto } from './dto/update-assistant.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiHeader,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { LoginAssistantDto } from './dto/login-assistants.dto';
 
 @Controller('assistants')
-@ApiTags("Assistants")
+@ApiTags('Assistants')
 export class AssistantsController {
   constructor(private readonly assistantsService: AssistantsService) {}
-
-  @Post()
-  create(@Body() createAssistantDto: CreateAssistantDto) {
-    return this.assistantsService.create(createAssistantDto);
-  }
 
   @Get()
   findAll() {
     return this.assistantsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.assistantsService.findOne(+id);
+  @Post('/login')
+  @ApiBadRequestResponse()
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  login(@Body() body: LoginAssistantDto) {
+    return this.assistantsService.loginAssistant(body);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAssistantDto: UpdateAssistantDto) {
-    return this.assistantsService.update(+id, updateAssistantDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assistantsService.remove(+id);
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Assistants token',
+    required: true,
+  })
+  update(
+    @Param('id') id: string,
+    @Body() updateAssistantDto: UpdateAssistantDto,
+  ) {
+    return this.assistantsService.update(id, updateAssistantDto);
   }
 }
