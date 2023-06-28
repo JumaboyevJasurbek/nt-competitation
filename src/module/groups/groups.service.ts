@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { Groups } from 'src/entities/groups.entity';
+import { ratingGroupDto } from './dto/rating-group.dto';
+import { group } from 'console';
+import { Students } from 'src/entities/students.entity ';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Injectable()
 export class GroupsService {
@@ -31,6 +35,23 @@ export class GroupsService {
     });
 
     return groups;
+  }
+
+  async ratingGroup(columnName: UUID, columnValue?: any) {
+    const ratingGroup = Students.createQueryBuilder('students');
+    ratingGroup.where(`students.${columnName} IS NOT NULL`);
+
+    if (columnValue) {
+      ratingGroup.andWhere(`students.${columnName} = :value`, {
+        value: columnValue,
+      });
+    }
+
+    const count = await ratingGroup.getCount();
+    console.log(ratingGroup, 'rating count');
+    console.log(count, 'count');
+
+    return count;
   }
 
   findOne(id: number) {

@@ -15,6 +15,7 @@ import { StudentsModule } from './module/students/students.module';
 import { GroupsModule } from './module/groups/groups.module';
 import { AdminModule } from './module/admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TasksModule } from './module/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JwtModule } from '@nestjs/jwt';
     StudentsModule,
     GroupsModule,
     AdminModule,
+    TasksModule,
   ],
 })
 export class AppModule implements NestModule {
@@ -41,6 +43,15 @@ export class AppModule implements NestModule {
         { path: '/assistants/login', method: RequestMethod.POST },
         { path: '/assistants/:id', method: RequestMethod.POST },
         { path: '/assistants/login', method: RequestMethod.POST },
+        { path: '/group-pagination', method: RequestMethod.GET },
+        { path: '/pagination', method: RequestMethod.GET },
+        { path: '/create-task', method: RequestMethod.POST },
+        { path: '/tasks', method: RequestMethod.GET },
+        { path: '/tasks/:id', method: RequestMethod.GET },
+        {
+          path: '/groups/rating/:columnName/:columnValue',
+          method: RequestMethod.GET,
+        },
       )
 
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
@@ -56,6 +67,10 @@ export class AppModule implements NestModule {
         { path: '/admin/assistant', method: RequestMethod.POST },
         { path: '/admin/group', method: RequestMethod.POST },
         { path: '/assistants/login', method: RequestMethod.POST },
+        {
+          path: '/groups/rating/:columnName/:columnValue',
+          method: RequestMethod.GET,
+        },
       )
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
   }

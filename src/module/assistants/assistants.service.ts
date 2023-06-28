@@ -5,6 +5,11 @@ import { Assistant } from 'src/entities/assistant.entity';
 import jwt from 'src/utils/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginAssistantDto } from './dto/login-assistants.dto';
+import { Groups } from 'src/entities/groups.entity';
+import { Tasks } from 'src/entities/task.entity';
+import { CreateTaskDto } from '../tasks/dto/create-task.dto';
+import { group } from 'console';
+import { UpdateTaskDto } from '../tasks/dto/update-task.dto';
 
 @Injectable()
 export class AssistantsService {
@@ -12,6 +17,21 @@ export class AssistantsService {
     const assist: any = await Assistant.find();
 
     return assist;
+  }
+
+  async paginationGroups(skip: number, take: number) {
+    return Groups.getRepository()
+      .createQueryBuilder('groups')
+      .skip(skip)
+      .take(take)
+      .getMany();
+  }
+
+  async paginate(page: number, pageSize: number) {
+    const skip = (page - 1) * pageSize;
+    const queryBuilder = Groups.createQueryBuilder();
+    queryBuilder.skip(skip).take(pageSize);
+    return queryBuilder.getMany();
   }
 
   // findOne(id: number) {
@@ -51,7 +71,54 @@ export class AssistantsService {
     };
   }
 
-   async update(
+  async createTask(tasks: CreateTaskDto): Promise<Object> {
+    const findTask = await Tasks.findOne({
+      where: {},
+      relations: { assistant: true },
+    }).catch((e) => {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
+
+    const task_name: any = tasks.task_name;
+
+    if (findTask?.task_name === task_name) {
+      throw new HttpException('You have already created a task!', 409);
+    }
+
+    await Tasks.create({
+      assistant: tasks.assistant,
+      task_name: tasks.task_name,
+      comment: tasks.comment,
+      date: new Date(),
+      submitted_time: tasks.submitted_time,
+      group: tasks.group,
+      mark: tasks.mark,
+    })
+      .save()
+      .catch((e) => {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      });
+
+    return {
+      message: 'success',
+      status: HttpStatus.OK,
+    };
+  }
+
+  async updateTask(id: string, updateTasks: UpdateTaskDto) {
+    const assistant: any = updateTasks.assistant;
+
+    const findAssistant = await Assistant.findOne({
+      where: { id: assistant },
+    });
+
+
+    
+
+    const updateTask = Tasks.update(id, updateTasks);
+  }
+
+  async update(
     id: string,
     updateAssistantDto: UpdateAssistantDto,
   ): Promise<Assistant> {

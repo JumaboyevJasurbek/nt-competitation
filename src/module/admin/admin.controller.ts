@@ -21,8 +21,8 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  registerAdmin(@Body() createAdminDto: CreateAdminDto) {
+    return this.adminService.registerAdmin(createAdminDto);
   }
 
   @Post('/assistant')
@@ -56,12 +56,32 @@ export class AdminController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
+  updateAdmin(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
+    return this.adminService.updateAdmin(id, updateAdminDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  @Delete('/group/:id')
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
+  removeGroup(@Param('id') id: string) {
+    return this.adminService.removeGroup(id);
+  }
+
+  @Delete('/assistant/:id')
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
+  removeAssistant(@Param('id') id: string) {
+    return this.adminService.removeAssistant(id);
   }
 }

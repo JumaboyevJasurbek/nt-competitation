@@ -23,18 +23,29 @@ export class TokenAssistantMiddleWare implements NestMiddleware {
     if (!findAssistant || !findAssistant?.id) {
       throw new HttpException('Bad Request in Token', HttpStatus.BAD_REQUEST);
     }
-    const user = await Assistant.findOne({
-      where: {
-        id: findAssistant?.id,
-        tel_number: findAssistant?.number,
-        username: findAssistant?.username,
-      },
-    });
+    // const user = await Assistant.findOne({
+    //   where: {
+    //     id: findAssistant?.id,
+    //     tel_number: findAssistant?.number,
+    //     username: findAssistant?.username,
+    //   },
+    // });
 
     // if (!user?.tel_number) {
     //   throw new HttpException('Tel number not found', HttpStatus.BAD_REQUEST);
     // } else if (!user?.username) {
     //   throw new HttpException('Username not found', HttpStatus.BAD_REQUEST);
+    // }
+
+    // if (
+    //   user?.id !== user?.id &&
+    //   user?.tel_number !== user?.tel_number &&
+    //   user?.username !== user?.username
+    // ) {
+    //   throw new HttpException(
+    //     ' This is not admin token',
+    //     HttpStatus.BAD_REQUEST,
+    //   );
     // }
 
     // req.id = user.id;

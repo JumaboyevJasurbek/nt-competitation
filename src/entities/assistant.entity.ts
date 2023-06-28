@@ -2,11 +2,14 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Groups } from './groups.entity';
 import { Gender } from 'src/types';
+import { Tasks } from './task.entity';
 
 @Entity({ name: 'assistants' })
 export class Assistant extends BaseEntity {
@@ -47,4 +50,7 @@ export class Assistant extends BaseEntity {
 
   @OneToMany(() => Groups, (group) => group.assistant)
   groups: Groups[];
+
+  @OneToMany(() => Tasks, (task) => task.assistant)
+  task: Tasks[];
 }

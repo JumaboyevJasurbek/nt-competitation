@@ -10,10 +10,12 @@ import { CreateGroupDto } from '../groups/dto/create-group.dto';
 import { Groups } from 'src/entities/groups.entity';
 import { CreateStudentDto } from '../students/dto/create-student.dto';
 import { Students } from 'src/entities/students.entity ';
+import { loginAdminDto } from './dto/login-admin.dto';
+import { UpdateGroupDto } from '../groups/dto/update-group.dto';
 
 @Injectable()
 export class AdminService {
-  async create(add: CreateAdminDto): Promise<Object> {
+  async registerAdmin(add: CreateAdminDto): Promise<Object> {
     const findAdmin: Admin | any = await Admin.findOne({
       where: {
         username: add.username,
@@ -43,6 +45,34 @@ export class AdminService {
     };
   }
 
+  async loginAdmin(body: loginAdminDto) {
+    const findAdmin = await Admin.findOne({
+      where: {
+        username: body.username,
+        password: body.password,
+      },
+    }).catch((e) => {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
+
+    if (!findAdmin) {
+      throw new HttpException(
+        'Username or password wrong !',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const token = jwt.sign({
+      id: String(findAdmin?.id),
+      password: String(findAdmin?.password),
+    });
+
+    return {
+      status: HttpStatus.OK,
+      token,
+    };
+  }
+
   async createAssistants(
     createAssistantsDto: CreateAssistantDto,
   ): Promise<object> {
@@ -50,7 +80,9 @@ export class AdminService {
       where: {
         username: createAssistantsDto.username,
       },
-    }).catch(() => null);
+    }).catch((e) => {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
 
     if (findAssistant) {
       throw new HttpException(
@@ -148,11 +180,42 @@ export class AdminService {
     };
   }
 
-  async update(id: number, updateAdminDto: UpdateAdminDto) {
-    return;
+  async updateAdmin(
+    id: string,
+    updateAdminDto: UpdateAdminDto,
+  ): Promise<object> {
+    await Admin.update(id, updateAdminDto);
+
+    return {
+      message: 'The admin stuff has been changed',
+      status: HttpStatus.OK,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+  async updateGroup(id: string, updateGroup: UpdateGroupDto): Promise<object> {
+    await Groups.update(id, updateGroup);
+
+    return {
+      message: 'Group items have been changed',
+      status: HttpStatus.OK,
+    };
+  }
+
+  async removeGroup(id: string): Promise<object> {
+    await Groups.delete(id);
+
+    return {
+      message: 'The group has been deleted',
+      status: HttpStatus.OK,
+    };
+  }
+
+  async removeAssistant(id: string): Promise<object> {
+    await Assistant.delete(id);
+
+    return {
+      message: 'Assistant teacher information has been deleted',
+      status: HttpStatus.OK,
+    };
   }
 }

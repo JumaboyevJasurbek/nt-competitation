@@ -9,11 +9,11 @@ dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: 'tiny.db.elephantsql.com',
-  port: 5432,
-  password: 'QqjMYGge3fpt9NZgfBJNyKrUlPT1fv7d',
-  username: 'jqadiugi',
-  database: 'jqadiugi',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  password: String(process.env.DB_PASSWORD),
+  username: process.env.DB_USERNAME,
+  database: process.env.DATABASE,
   entities: [Assistant, Groups, Students, Admin, Tasks],
   autoLoadEntities: true,
   synchronize: true,
