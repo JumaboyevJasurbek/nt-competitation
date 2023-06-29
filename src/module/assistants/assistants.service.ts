@@ -10,6 +10,8 @@ import { Tasks } from 'src/entities/task.entity';
 import { CreateTaskDto } from '../tasks/dto/create-task.dto';
 import { group } from 'console';
 import { UpdateTaskDto } from '../tasks/dto/update-task.dto';
+import { Request } from 'express';
+import { Roles } from 'src/types';
 
 @Injectable()
 export class AssistantsService {
@@ -19,7 +21,10 @@ export class AssistantsService {
     return assist;
   }
 
-  async paginationGroups(skip: number, take: number) {
+  async paginationGroups(skip: number, take: number, req: Request) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
     return Groups.getRepository()
       .createQueryBuilder('groups')
       .skip(skip)
@@ -27,7 +32,10 @@ export class AssistantsService {
       .getMany();
   }
 
-  async paginate(page: number, pageSize: number) {
+  async paginate(page: number, pageSize: number, req: Request) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
     const skip = (page - 1) * pageSize;
     const queryBuilder = Groups.createQueryBuilder();
     queryBuilder.skip(skip).take(pageSize);
@@ -63,6 +71,7 @@ export class AssistantsService {
       id: findAssistant.id,
       username: findAssistant.username,
       number: number,
+      role: Roles.ASSISTANT,
     });
 
     return {
@@ -71,7 +80,10 @@ export class AssistantsService {
     };
   }
 
-  async createTask(tasks: CreateTaskDto): Promise<Object> {
+  async createTask(tasks: CreateTaskDto, req: Request) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
     const findTask = await Tasks.findOne({
       where: {},
       relations: { assistant: true },
@@ -105,15 +117,16 @@ export class AssistantsService {
     };
   }
 
-  async updateTask(id: string, updateTasks: UpdateTaskDto) {
+  async updateTask(id: string, updateTasks: UpdateTaskDto, req: Request) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
+
     const assistant: any = updateTasks.assistant;
 
     const findAssistant = await Assistant.findOne({
       where: { id: assistant },
     });
-
-
-    
 
     const updateTask = Tasks.update(id, updateTasks);
   }
@@ -121,7 +134,11 @@ export class AssistantsService {
   async update(
     id: string,
     updateAssistantDto: UpdateAssistantDto,
-  ): Promise<Assistant> {
+    req: Request,
+  ) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
     const assistant: Assistant | any = await Assistant.update(
       id,
       updateAssistantDto,

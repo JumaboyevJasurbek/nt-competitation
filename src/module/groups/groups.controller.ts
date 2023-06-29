@@ -18,22 +18,7 @@ import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
-  @Post()
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Admin token',
-    required: true,
-  })
-  create(@Body() createGroupDto: CreateGroupDto) {
-    return this.groupsService.create(createGroupDto);
-  }
-
   @Get()
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Admin token',
-    required: true,
-  })
   findAll() {
     return this.groupsService.findAll();
   }

@@ -9,23 +9,6 @@ import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Injectable()
 export class GroupsService {
-  async create(createGroupDto: CreateGroupDto): Promise<Groups> {
-    const groups: Groups[] | any = await Groups.createQueryBuilder()
-      .insert()
-      .into(Groups)
-      .values({
-        position: createGroupDto.position,
-        teacher: createGroupDto.teacher,
-        lesson_days: createGroupDto.lesson_days,
-        img: createGroupDto.img,
-        assistant: createGroupDto.assistant,
-        group_number: createGroupDto.group_number,
-      })
-      .execute();
-
-    return groups;
-  }
-
   async findAll(): Promise<Groups> {
     const groups: Groups[] | any = await Groups.find({
       relations: {

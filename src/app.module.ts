@@ -16,6 +16,7 @@ import { GroupsModule } from './module/groups/groups.module';
 import { AdminModule } from './module/admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TasksModule } from './module/tasks/tasks.module';
+import { TokenMiddleWare } from './middleware/token.middeware';
 
 @Module({
   imports: [
@@ -35,43 +36,14 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     // Admin
     consumer
-      .apply(TokenAdminMiddleWare)
+      .apply(TokenMiddleWare)
       .exclude(
-        { path: '/students', method: RequestMethod.GET },
         { path: '/admin', method: RequestMethod.POST },
-        { path: '/groups', method: RequestMethod.GET },
+        { path: '/admin/login', method: RequestMethod.POST },
         { path: '/assistants/login', method: RequestMethod.POST },
-        { path: '/assistants/:id', method: RequestMethod.POST },
-        { path: '/assistants/login', method: RequestMethod.POST },
-        { path: '/group-pagination', method: RequestMethod.GET },
-        { path: '/pagination', method: RequestMethod.GET },
-        { path: '/create-task', method: RequestMethod.POST },
-        { path: '/tasks', method: RequestMethod.GET },
-        { path: '/tasks/:id', method: RequestMethod.GET },
-        {
-          path: '/groups/rating/:columnName/:columnValue',
-          method: RequestMethod.GET,
-        },
       )
 
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
-    // Assistant
-    consumer
-      .apply(TokenAssistantMiddleWare)
-      .exclude(
-        { path: '/students', method: RequestMethod.GET },
-        { path: '/students', method: RequestMethod.POST },
-        { path: '/groups', method: RequestMethod.GET },
-        { path: '/groups', method: RequestMethod.POST },
-        { path: '/admin', method: RequestMethod.POST },
-        { path: '/admin/assistant', method: RequestMethod.POST },
-        { path: '/admin/group', method: RequestMethod.POST },
-        { path: '/assistants/login', method: RequestMethod.POST },
-        {
-          path: '/groups/rating/:columnName/:columnValue',
-          method: RequestMethod.GET,
-        },
-      )
-      .forRoutes({ path: '/**', method: RequestMethod.ALL });
   }
 }
+ 

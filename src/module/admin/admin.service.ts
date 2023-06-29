@@ -12,6 +12,9 @@ import { CreateStudentDto } from '../students/dto/create-student.dto';
 import { Students } from 'src/entities/students.entity ';
 import { loginAdminDto } from './dto/login-admin.dto';
 import { UpdateGroupDto } from '../groups/dto/update-group.dto';
+import { request } from 'http';
+import { Roles } from 'src/types';
+import { Request } from 'express';
 
 @Injectable()
 export class AdminService {
@@ -37,6 +40,7 @@ export class AdminService {
     const token = jwt.sign({
       id: newAdmin?.id,
       password: password,
+      role: Roles.ADMIN,
     });
 
     return {
@@ -75,7 +79,11 @@ export class AdminService {
 
   async createAssistants(
     createAssistantsDto: CreateAssistantDto,
+    req: Request,
   ): Promise<object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     const findAssistant: Assistant | any = await Assistant.findOne({
       where: {
         username: createAssistantsDto.username,
@@ -113,6 +121,8 @@ export class AdminService {
       id: newUser?.id,
       username: newUser.username,
       number: number,
+      password: newUser.password,
+      role: Roles.ASSISTANT,
     });
 
     return {
@@ -121,7 +131,13 @@ export class AdminService {
     };
   }
 
-  async createGroup(createGroup: CreateGroupDto): Promise<Object> {
+  async createGroup(
+    createGroup: CreateGroupDto,
+    req: Request,
+  ): Promise<Object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     const findGroup: Groups | any = await Groups.findOne({
       where: { group_number: createGroup.group_number },
     });
@@ -151,7 +167,10 @@ export class AdminService {
     };
   }
 
-  async createStudent(createStudent: CreateStudentDto) {
+  async createStudent(createStudent: CreateStudentDto, req: Request) {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     const findStudent = await Students.findOne({
       where: { username: createStudent.username },
     });
@@ -183,7 +202,11 @@ export class AdminService {
   async updateAdmin(
     id: string,
     updateAdminDto: UpdateAdminDto,
+    req: Request,
   ): Promise<object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     await Admin.update(id, updateAdminDto);
 
     return {
@@ -192,7 +215,14 @@ export class AdminService {
     };
   }
 
-  async updateGroup(id: string, updateGroup: UpdateGroupDto): Promise<object> {
+  async updateGroup(
+    id: string,
+    updateGroup: UpdateGroupDto,
+    req: Request,
+  ): Promise<object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     await Groups.update(id, updateGroup);
 
     return {
@@ -201,7 +231,10 @@ export class AdminService {
     };
   }
 
-  async removeGroup(id: string): Promise<object> {
+  async removeGroup(id: string, req: Request): Promise<object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     await Groups.delete(id);
 
     return {
@@ -210,7 +243,10 @@ export class AdminService {
     };
   }
 
-  async removeAssistant(id: string): Promise<object> {
+  async removeAssistant(id: string, req: Request): Promise<object> {
+    if (!req.admin) {
+      throw new HttpException('You are not admin', HttpStatus.BAD_REQUEST);
+    }
     await Assistant.delete(id);
 
     return {

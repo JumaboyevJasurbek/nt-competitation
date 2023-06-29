@@ -13,8 +13,10 @@ class JwtStrategy {
   verify(token: string): any {
     try {
       const decoded = jwt.verify(token, this.JWT_SECRET);
+
       return decoded;
     } catch (error) {
+
       throw new HttpException('Invalid token!', HttpStatus.BAD_REQUEST);
     }
   }

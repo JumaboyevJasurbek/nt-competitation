@@ -23,12 +23,12 @@ export class TokenAdminMiddleWare implements NestMiddleware {
     if (!findAdmin || !findAdmin?.id) {
       throw new HttpException('Bad Request in Token', HttpStatus.BAD_REQUEST);
     }
-    // const admin = await Admin.findOne({
-    //   where: {
-    //     id: findAdmin?.id,
-    //     password: findAdmin?.password,
-    //   },
-    // });
+    const admin = await Admin.findOne({
+      where: {
+        id: findAdmin?.id,
+        password: findAdmin?.password,
+      },
+    });
 
     // if (!user?.password) {
     //   throw new HttpException('Password not found', HttpStatus.BAD_REQUEST);
@@ -36,12 +36,13 @@ export class TokenAdminMiddleWare implements NestMiddleware {
     //   throw new HttpException('Username not found', HttpStatus.BAD_REQUEST);
     // }
 
-    // if (
-    //   admin?.id !== admin?.id &&
-    //   admin?.password !== admin?.password
-    // ) {
-    //   throw new HttpException(' This is not admin token', HttpStatus.BAD_REQUEST);
-    // }
+    if (
+      admin?.id !== admin?.id &&
+      admin?.password !== process.env.ADMIN_PASSWORD
+    ) {
+      throw new HttpException('Siz Admin emasiz', HttpStatus.BAD_REQUEST);
+    }
+    
 
     // req.id = user.id;
     next();
