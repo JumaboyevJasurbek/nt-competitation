@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Groups } from './groups.entity';
+import { Tasks } from './task.entity';
 
 @Entity({ name: 'students' })
 export class Students extends BaseEntity {
@@ -37,4 +39,7 @@ export class Students extends BaseEntity {
   @ManyToOne(() => Groups, (group) => group.student, { cascade: true })
   @JoinColumn()
   group: Groups;
+
+  @OneToMany(() => Tasks, (task) => task.student)
+  task: Tasks[];
 }

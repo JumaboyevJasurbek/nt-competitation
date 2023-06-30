@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { type } from 'os';
 import { Assistant } from 'src/entities/assistant.entity';
-import { Groups } from 'src/entities/groups.entity';
+import { Students } from 'src/entities/students.entity ';
 
 export class CreateTaskDto {
   @IsString()
@@ -48,16 +48,16 @@ export class CreateTaskDto {
   @ApiProperty({
     name: 'assistant',
     type: 'string',
-    default: 'assistant.uuid......',
+    default: 'assistant_uuid______',
   })
   assistant: Assistant;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    name: 'group',
+    name: 'student',
     type: 'string',
-    default: 'group.uuid......',
+    default: 'student__uuid_________',
   })
-  group: Groups;
+  student: Students;
 }

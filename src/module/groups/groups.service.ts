@@ -20,32 +20,31 @@ export class GroupsService {
     return groups;
   }
 
-  async ratingGroup(columnName: UUID, columnValue?: any) {
-    const ratingGroup = Students.createQueryBuilder('students');
-    ratingGroup.where(`students.${columnName} IS NOT NULL`);
-
-    if (columnValue) {
-      ratingGroup.andWhere(`students.${columnName} = :value`, {
-        value: columnValue,
-      });
-    }
-
-    const count = await ratingGroup.getCount();
-    console.log(ratingGroup, 'rating count');
-    console.log(count, 'count');
+  async ratingGroup() {
+    const groups: Groups[] | any = await Groups.find({
+      relations: {
+        student: true,
+        assistant: true,
+      },
+    });
+    const count = await Students.createQueryBuilder('students')
+      .innerJoin('students.group', 'group')
+      .select('*, COUNT(students.group)', 'count')
+      // .groupBy('students.id')
+      .getRawMany();
 
     return count;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} group`;
+  // }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
-  }
+  // update(id: number, updateGroupDto: UpdateGroupDto) {
+  //   return `This action updates a #${id} group`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} group`;
+  // }
 }

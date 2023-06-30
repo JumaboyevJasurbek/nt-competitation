@@ -1,13 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
 import { StudentsService } from './students.service';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ratingGroupDto } from '../groups/dto/rating-group.dto';
+import { Request } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('students')
 @ApiTags('Students')
@@ -20,13 +16,18 @@ export class StudentsController {
   // }
 
   @Get()
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Admin token',
-    required: true,
-  })
   findAll() {
     return this.studentsService.findAll();
+  }
+
+  @Post('mark')
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Assistants token',
+    required: true,
+  })
+  async markRating(@Body() group: ratingGroupDto, @Req() req: Request) {
+    return await this.studentsService.markRating(group, req);
   }
 
   // @Get(':id')

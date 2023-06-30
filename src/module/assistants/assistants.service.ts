@@ -12,6 +12,7 @@ import { group } from 'console';
 import { UpdateTaskDto } from '../tasks/dto/update-task.dto';
 import { Request } from 'express';
 import { Roles } from 'src/types';
+import { Students } from 'src/entities/students.entity ';
 
 @Injectable()
 export class AssistantsService {
@@ -97,13 +98,27 @@ export class AssistantsService {
       throw new HttpException('You have already created a task!', 409);
     }
 
+    const assistants = await Assistant.find().catch((e) => {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
+
+    const assistantId = assistants.find((e) => e.id == e.id);
+
+    const assistantId1 = assistantId.id;
+
+    const taskAssistant: any = tasks.assistant;
+
+    if (assistantId1 != taskAssistant) {
+      throw new HttpException('Your student not valid', HttpStatus.NOT_FOUND);
+    }
+
     await Tasks.create({
       assistant: tasks.assistant,
       task_name: tasks.task_name,
       comment: tasks.comment,
       date: new Date(),
       submitted_time: tasks.submitted_time,
-      group: tasks.group,
+      student: tasks.student,
       mark: tasks.mark,
     })
       .save()
