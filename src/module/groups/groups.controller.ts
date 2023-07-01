@@ -12,10 +12,10 @@ export class GroupsController {
     return this.groupsService.findAll();
   }
 
-  @Get('rating')
-  ratingGroup() {
-    return this.groupsService.ratingGroup();
-  }
+  // @Get('rating')
+  // ratingGroup() {
+  //   return this.groupsService.ratingGroup();
+  // }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

@@ -20,21 +20,21 @@ export class GroupsService {
     return groups;
   }
 
-  async ratingGroup() {
-    const groups: Groups[] | any = await Groups.find({
-      relations: {
-        student: true,
-        assistant: true,
-      },
-    });
-    const count = await Students.createQueryBuilder('students')
-      .innerJoin('students.group', 'group')
-      .select('*, COUNT(students.group)', 'count')
-      // .groupBy('students.id')
-      .getRawMany();
+  // async ratingGroup() {
+  //   const groups: Groups[] | any = await Groups.find({
+  //     relations: {
+  //       student: true,
+  //       assistant: true,
+  //     },
+  //   });
+  //   const count = await Students.createQueryBuilder('students')
+  //     .innerJoin('students.group', 'group')
+  //     .select('*, COUNT(students.group)', 'count')
+  //     // .groupBy('students.id')
+  //     .getRawMany();
 
-    return count;
-  }
+  //   return count;
+  // }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} group`;

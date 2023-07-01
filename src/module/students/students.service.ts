@@ -38,9 +38,13 @@ export class StudentsService {
 
     return rating;
   }
-  // findOne(id: number) {
-  //   return `This action returns a #${id} student`;
-  // }
+  async findOne(id: string): Promise<Students> {
+    const student = await Students.findOne({
+      where: { id: id },
+    });
+
+    return student;
+  }
 
   // update(id: number, updateStudentDto: UpdateStudentDto) {
   //   return `This action updates a #${id} student`;

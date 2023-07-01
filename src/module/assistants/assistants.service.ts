@@ -22,23 +22,33 @@ export class AssistantsService {
     return assist;
   }
 
-  async paginationGroups(skip: number, take: number, req: Request) {
-    if (!req.assistant) {
-      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
-    }
-    return Groups.getRepository()
-      .createQueryBuilder('groups')
-      .skip(skip)
-      .take(take)
-      .getMany();
-  }
+  // async paginationGroups(skip: number, take: number, req: Request) {
+  //   if (!req.assistant) {
+  //     throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+  //   }
+  //   return Groups.getRepository()
+  //     .createQueryBuilder('groups')
+  //     .skip(skip)
+  //     .take(take)
+  //     .getMany();
+  // }
 
-  async paginate(page: number, pageSize: number, req: Request) {
+  async paginationGroups(page: number, pageSize: number, req: Request) {
     if (!req.assistant) {
       throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
     }
     const skip = (page - 1) * pageSize;
     const queryBuilder = Groups.createQueryBuilder();
+    queryBuilder.skip(skip).take(pageSize);
+    return queryBuilder.getMany();
+  }
+
+  async paginationStudents(page: number, pageSize: number, req: Request) {
+    if (!req.assistant) {
+      throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
+    }
+    const skip = (page - 1) * pageSize;
+    const queryBuilder = Students.createQueryBuilder();
     queryBuilder.skip(skip).take(pageSize);
     return queryBuilder.getMany();
   }

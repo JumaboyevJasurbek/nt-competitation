@@ -33,19 +33,19 @@ export class AssistantsController {
     return this.assistantsService.findAll();
   }
 
-  @Get('/group-pagination/:skip/:take')
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Assistants token',
-    required: true,
-  })
-  paginationGroups(
-    @Param('skip') skip: number,
-    @Param('take') take: number,
-    @Req() req: Request,
-  ) {
-    return this.assistantsService.paginationGroups(+skip, +take, req);
-  }
+  // @Get('/group-pagination/:skip/:take')
+  // @ApiHeader({
+  //   name: 'autharization',
+  //   description: 'Assistants token',
+  //   required: true,
+  // })
+  // paginationGroups(
+  //   @Param('skip') skip: number,
+  //   @Param('take') take: number,
+  //   @Req() req: Request,
+  // ) {
+  //   return this.assistantsService.paginationGroups(+skip, +take, req);
+  // }
 
   @Get('/group-pagination')
   @ApiHeader({
@@ -53,12 +53,26 @@ export class AssistantsController {
     description: 'Assistants token',
     required: true,
   })
-  async getPaginatedResults(
+  async getPaginateGroup(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
     @Req() req: Request,
   ) {
-    return this.assistantsService.paginate(+page, +pageSize, req);
+    return this.assistantsService.paginationGroups(+page, +pageSize, req);
+  }
+
+  @Get('/student-pagination')
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Assistants token',
+    required: true,
+  })
+  async getPaginateStudent(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Req() req: Request,
+  ) {
+    return this.assistantsService.paginationStudents(+page, +pageSize, req);
   }
 
   @Post('/login')

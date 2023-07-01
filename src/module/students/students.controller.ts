@@ -30,10 +30,10 @@ export class StudentsController {
     return await this.studentsService.markRating(group, req);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.studentsService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.studentsService.findOne(id);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {

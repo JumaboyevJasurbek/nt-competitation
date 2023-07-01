@@ -45,6 +45,8 @@ export class AppModule implements NestModule {
         { path: '/students', method: RequestMethod.GET },
         { path: '/groups', method: RequestMethod.GET },
         { path: '/assistants', method: RequestMethod.GET },
+        { path: '/students', method: RequestMethod.GET },
+        { path: '/students/:id', method: RequestMethod.GET },
       )
 
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
