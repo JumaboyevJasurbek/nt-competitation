@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -17,10 +17,10 @@ export class GroupsController {
   //   return this.groupsService.ratingGroup();
   // }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.groupsService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.groupsService.findOne(id);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {

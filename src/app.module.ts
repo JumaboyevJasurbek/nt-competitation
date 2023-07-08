@@ -25,10 +25,10 @@ import { TokenMiddleWare } from './middleware/token.middeware';
     JwtModule.register({
       secret: process.env.SECRET_KEY,
     }),
+    AdminModule,
     AssistantsModule,
     StudentsModule,
     GroupsModule,
-    AdminModule,
     TasksModule,
   ],
 })
@@ -44,6 +44,7 @@ export class AppModule implements NestModule {
         { path: '/groups/rating', method: RequestMethod.GET },
         { path: '/students', method: RequestMethod.GET },
         { path: '/groups', method: RequestMethod.GET },
+        { path: '/groups/:id', method: RequestMethod.GET },
         { path: '/assistants', method: RequestMethod.GET },
         { path: '/students', method: RequestMethod.GET },
         { path: '/students/:id', method: RequestMethod.GET },

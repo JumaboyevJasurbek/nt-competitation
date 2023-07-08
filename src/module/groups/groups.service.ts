@@ -1,11 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Groups } from 'src/entities/groups.entity';
-import { ratingGroupDto } from './dto/rating-group.dto';
-import { group } from 'console';
-import { Students } from 'src/entities/students.entity ';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Injectable()
 export class GroupsService {
@@ -18,6 +12,16 @@ export class GroupsService {
     });
 
     return groups;
+  }
+
+  async findOne(id: string) {
+    return await Groups.findOne({
+      where: {
+        id: id,
+      },
+    }).catch((e) => {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
   }
 
   // async ratingGroup() {

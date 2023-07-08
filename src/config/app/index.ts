@@ -7,6 +7,6 @@ class AppConfig {
 export const appConfig = registerAs(
   'app',
   (): AppConfig => ({
-    port: 3000,
+    port: 1000,
   }),
 );

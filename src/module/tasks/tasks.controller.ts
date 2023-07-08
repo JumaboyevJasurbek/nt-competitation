@@ -6,13 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 @Controller('tasks')
-@ApiTags("tasks")
+@ApiTags('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -22,8 +24,8 @@ export class TasksController {
     description: 'Assistant token',
     required: true,
   })
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@Req() req: Request) {
+    return this.tasksService.findAll(req);
   }
 
   @Get(':id')
@@ -32,7 +34,7 @@ export class TasksController {
     description: 'Assistant token',
     required: true,
   })
-  findOne(@Param('id') id: string) {
-    this.tasksService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    this.tasksService.findOne(id, req);
   }
 }
