@@ -43,14 +43,14 @@ export class CreateTaskDto {
   })
   submitted_time: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    name: 'assistant',
-    type: 'string',
-    default: 'assistant_uuid______',
-  })
-  assistant: Assistant;
+  // @IsString()
+  // @IsNotEmpty()
+  // @ApiProperty({
+  //   name: 'assistant',
+  //   type: 'string',
+  //   default: 'assistant_uuid______',
+  // })
+  // assistant: Assistant;
 
   @IsString()
   @IsNotEmpty()

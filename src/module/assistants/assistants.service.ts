@@ -91,7 +91,7 @@ export class AssistantsService {
     };
   }
 
-  async createTask(tasks: CreateTaskDto, req: Request) {
+  async createTask(tasks: CreateTaskDto, assistant: string, req: Request) {
     if (!req.assistant) {
       throw new HttpException('You are not Assistant', HttpStatus.BAD_REQUEST);
     }
@@ -100,6 +100,10 @@ export class AssistantsService {
       relations: { assistant: true },
     }).catch((e) => {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    });
+
+    const findAssistant = await Assistant.findOne({
+      where: { id: assistant },
     });
 
     const task_name: any = tasks.task_name;
@@ -114,16 +118,14 @@ export class AssistantsService {
 
     const assistantId = assistants.find((e) => e.id == e.id);
 
-    const assistantId1 = assistantId.id;
+    const taskAssistant: any = findAssistant.id;
 
-    const taskAssistant: any = tasks.assistant;
-
-    if (assistantId1 != taskAssistant) {
+    if (assistantId.id != taskAssistant) {
       throw new HttpException('Your student not valid', HttpStatus.NOT_FOUND);
     }
 
     await Tasks.create({
-      assistant: tasks.assistant,
+      assistant: taskAssistant,
       task_name: tasks.task_name,
       comment: tasks.comment,
       date: new Date(),

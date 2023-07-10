@@ -22,6 +22,7 @@ import { LoginAssistantDto } from './dto/login-assistants.dto';
 import { CreateTaskDto } from '../tasks/dto/create-task.dto';
 import { UpdateTaskDto } from '../tasks/dto/update-task.dto';
 import { Request } from 'express';
+import { Assistant } from 'src/entities/assistant.entity';
 
 @Controller('assistants')
 @ApiTags('Assistants')
@@ -83,7 +84,7 @@ export class AssistantsController {
     return this.assistantsService.loginAssistant(body);
   }
 
-  @Post('/create-task')
+  @Post('/create-task/:assistantId')
   @ApiBadRequestResponse()
   @ApiOkResponse()
   @ApiNotFoundResponse()
@@ -92,8 +93,12 @@ export class AssistantsController {
     description: 'Assistants token',
     required: true,
   })
-  async createTask(@Body() body: CreateTaskDto, @Req() req: Request) {
-    return await this.assistantsService.createTask(body, req);
+  async createTask(
+    @Body() body: CreateTaskDto,
+    @Param('assistantId') assistant: string,
+    @Req() req: Request,
+  ) {
+    return await this.assistantsService.createTask(body, assistant, req);
   }
 
   @Patch(':id')
