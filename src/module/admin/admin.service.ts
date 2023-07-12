@@ -69,6 +69,7 @@ export class AdminService {
     const token = jwt.sign({
       id: String(findAdmin?.id),
       password: String(findAdmin?.password),
+      role: Roles.ADMIN,
     });
 
     return {
