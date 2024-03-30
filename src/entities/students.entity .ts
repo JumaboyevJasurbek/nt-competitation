@@ -36,7 +36,9 @@ export class Students extends BaseEntity {
   @Column()
   gender: string;
 
-  @ManyToOne(() => Groups, (group) => group.student, { cascade: true })
+  @ManyToOne(() => Groups, (group) => group.student, {
+    cascade: true,
+  })
   @JoinColumn()
   group: Groups;
 

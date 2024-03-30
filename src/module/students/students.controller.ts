@@ -30,6 +30,11 @@ export class StudentsController {
     return await this.studentsService.markRating(group, req);
   }
 
+  @Get(':student')
+  findStudent(@Param('student') student: string) {
+    return this.studentsService.findStudents(student);
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(id);

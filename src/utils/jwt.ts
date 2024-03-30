@@ -16,7 +16,6 @@ class JwtStrategy {
 
       return decoded;
     } catch (error) {
-
       throw new HttpException('Invalid token!', HttpStatus.BAD_REQUEST);
     }
   }

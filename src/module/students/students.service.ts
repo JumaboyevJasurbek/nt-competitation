@@ -12,7 +12,11 @@ export class StudentsService {
   }
 
   async findAll(): Promise<Students> {
-    const students: Students[] | any = await Students.find();
+    const students: Students[] | any = await Students.find({
+      relations: {
+        task: true,
+      },
+    });
 
     return students;
   }
@@ -44,6 +48,30 @@ export class StudentsService {
     });
 
     return student;
+  }
+
+  async findStudents(student: string) {
+    const students = await Students.find().catch((e) => {
+      throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+    });
+
+    const searchStudent = students.filter((e: Students) => {
+      e?.first_name?.toLowerCase().includes(student.toLowerCase());
+    });
+
+    console.log(students, 'all students');
+
+    console.log(
+      students.filter((e: Students) => {
+        e?.first_name?.toLowerCase().includes(student?.toLowerCase());
+      }),
+    );
+
+    console.log(searchStudent);
+
+    return students.filter((e: Students) => {
+      e?.first_name?.toLowerCase().includes(student.toLowerCase());
+    });
   }
 
   // update(id: number, updateStudentDto: UpdateStudentDto) {
